@@ -1,0 +1,14 @@
+# Reportes generados por los agentes (no versionar)
+REPORTE-*.md
+PR-DESCRIPTION.md
+
+# Dependencias
+node_modules/
+
+# Variables de entorno
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

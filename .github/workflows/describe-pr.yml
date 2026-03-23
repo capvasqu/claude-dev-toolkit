@@ -1,0 +1,82 @@
+name: Descripcion automatica de PR
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [main, master, develop]
+
+jobs:
+  describe:
+    name: Generar descripcion del PR con Claude Code
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Obtener diff del PR
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git diff origin/${{ github.base_ref }}...HEAD --stat > /tmp/diff-stat.txt
+          git diff origin/${{ github.base_ref }}...HEAD > /tmp/diff-full.txt
+          git log origin/${{ github.base_ref }}..HEAD --oneline > /tmp/commits.txt
+          echo "Branch: ${{ github.head_ref }}" > /tmp/pr-context.txt
+          echo "Base: ${{ github.base_ref }}" >> /tmp/pr-context.txt
+          echo "Titulo del PR: ${{ github.event.pull_request.title }}" >> /tmp/pr-context.txt
+
+      - name: Generar descripcion con Claude Code
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          PROMPT="$(cat .github/prompts/describe-pr.md)"
+          CONTEXT="Contexto del PR:
+          $(cat /tmp/pr-context.txt)
+
+          Commits incluidos:
+          $(cat /tmp/commits.txt)
+
+          Archivos modificados:
+          $(cat /tmp/diff-stat.txt)
+
+          Diff completo:
+          $(head -c 20000 /tmp/diff-full.txt)"
+
+          claude --print "$PROMPT
+
+          $CONTEXT" > PR-DESCRIPTION.md
+        continue-on-error: true
+
+      - name: Actualizar descripcion del PR
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            let body = '';
+
+            if (fs.existsSync('PR-DESCRIPTION.md')) {
+              body = fs.readFileSync('PR-DESCRIPTION.md', 'utf8');
+            } else {
+              body = '_No se pudo generar la descripcion automaticamente._';
+            }
+
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              body: body
+            });
