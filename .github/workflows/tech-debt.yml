@@ -34,7 +34,10 @@ jobs:
         run: |
           claude -p "$(cat .github/prompts/tech-debt.md)" \
             --allowedTools "Read,Bash" \
-            --output-format text > REPORTE-DEUDA-TECNICA.md
+            --output-format text > REPORTE-DEUDA-TECNICA.md 2>&1 || true
+          echo "=== CONTENIDO DEL REPORTE ==="
+          cat REPORTE-DEUDA-TECNICA.md
+          echo "=== FIN DEL REPORTE ==="
         continue-on-error: true
 
       - name: Subir reporte como artefacto
