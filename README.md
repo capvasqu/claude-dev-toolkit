@@ -69,11 +69,20 @@ claude --print "$(cat /ruta/al/toolkit/agents/review-bugs/prompt.md)"
 
 ## Integracion con GitHub Actions
 
-### Prerequisito: configurar el secreto ANTHROPIC_API_KEY
+## Prerequisitos
+
+- [Claude Code](https://docs.anthropic.com/claude-code) instalado globalmente
+- Node.js 18 o superior
+- Git Bash (Windows) o terminal Unix/Mac
+- Cuenta en [claude.ai](https://claude.ai) con suscripcion Pro o Max
+- `CLAUDE_CODE_OAUTH_TOKEN` generado con `claude setup-token`
+
+### Prerequisito: configurar el secreto CLAUDE_CODE_OAUTH_TOKEN
 
 1. En tu repositorio ir a **Settings → Secrets and variables → Actions**
-2. Crear un nuevo secreto llamado `ANTHROPIC_API_KEY`
-3. Pegar tu API key de [console.anthropic.com](https://console.anthropic.com)
+2. Crear un nuevo secreto llamado `CLAUDE_CODE_OAUTH_TOKEN`
+3. Generar el token ejecutando `claude setup-token` en Git Bash
+4. Pegar el token generado como valor del secreto
 
 ### Copiar los workflows a tu repositorio
 
