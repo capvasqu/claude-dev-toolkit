@@ -32,7 +32,9 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          claude --print "$(cat .github/prompts/tech-debt.md)" > REPORTE-DEUDA-TECNICA.md
+          claude -p "$(cat .github/prompts/tech-debt.md)" \
+            --allowedTools "Read,Bash" \
+            --output-format text > REPORTE-DEUDA-TECNICA.md
         continue-on-error: true
 
       - name: Subir reporte como artefacto

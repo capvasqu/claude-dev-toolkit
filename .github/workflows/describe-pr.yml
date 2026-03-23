@@ -55,7 +55,11 @@ jobs:
           Diff completo:
           $(head -c 20000 /tmp/diff-full.txt)"
 
-          claude --print "$PROMPT
+          claude -p "$PROMPT \
+
+          $CONTEXT" \
+            --allowedTools "Read,Bash" \
+            --output-format text > PR-DESCRIPTION.md
 
           $CONTEXT" > PR-DESCRIPTION.md
         continue-on-error: true

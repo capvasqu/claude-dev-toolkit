@@ -32,7 +32,9 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          claude --print "$(cat .github/prompts/review-bugs.md)" > REPORTE-REVISION-INTEGRAL.md
+          claude -p "$(cat .github/prompts/review-bugs.md)" \
+            --allowedTools "Read,Bash" \
+            --output-format text > REPORTE-REVISION-INTEGRAL.md
         continue-on-error: true
 
       - name: Publicar reporte como comentario en el PR
