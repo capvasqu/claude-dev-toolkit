@@ -40,7 +40,7 @@ jobs:
 
       - name: Generar descripcion con Claude Code
         env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           PROMPT="$(cat .github/prompts/describe-pr.md)"
           CONTEXT="Contexto del PR:
@@ -55,11 +55,7 @@ jobs:
           Diff completo:
           $(head -c 20000 /tmp/diff-full.txt)"
 
-          claude -p "$PROMPT \
-
-          $CONTEXT" \
-            --allowedTools "Write,Read,Bash" \
-            --output-format text > PR-DESCRIPTION.md
+          claude --print "$PROMPT
 
           $CONTEXT" > PR-DESCRIPTION.md
         continue-on-error: true

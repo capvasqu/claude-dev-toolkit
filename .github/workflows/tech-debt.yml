@@ -30,12 +30,9 @@ jobs:
 
       - name: Ejecutar analisis de deuda tecnica
         env:
-          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          claude -p "$(cat .github/prompts/tech-debt.md)" \
-            --allowedTools "Write,Read,Bash" \
-            --output-format text > REPORTE-DEUDA-TECNICA.md 2>&1 || true
-          cat REPORTE-DEUDA-TECNICA.md
+          claude --print "$(cat .github/prompts/tech-debt.md)" > REPORTE-DEUDA-TECNICA.md
         continue-on-error: true
 
       - name: Subir reporte como artefacto
