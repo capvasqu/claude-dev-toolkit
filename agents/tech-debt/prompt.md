@@ -1,83 +1,83 @@
-# Agente: tech-debt
-# Propósito: Detectar y priorizar deuda técnica por impacto
+# Agent: tech-debt
+# Purpose: Detect and prioritize technical debt by impact
 
-Analiza el proyecto completo e identifica toda la deuda técnica existente.
-Genera un archivo REPORTE-DEUDA-TECNICA.md con los hallazgos priorizados.
+Analyze the entire project and identify all existing technical debt.
+Generate a file called REPORTE-DEUDA-TECNICA.md with prioritized findings.
 
-## Qué es deuda técnica
-Código que funciona pero que fue hecho de forma subóptima y que eventualmente
-tendrá un costo mayor si no se corrige: difícil de mantener, escalar o entender.
+## What is technical debt
+Code that works but was implemented in a suboptimal way and will eventually
+cost more if not corrected: hard to maintain, scale or understand.
 
-## Categorías a analizar
+## Categories to analyze
 
-### 1. Deuda de arquitectura
-- Violaciones al patrón de capas (lógica de negocio en el controller)
-- Dependencias circulares entre módulos
-- Clases con demasiadas responsabilidades (God Classes)
-- Acoplamiento excesivo entre componentes
+### 1. Architecture debt
+- Layer pattern violations (business logic in the controller)
+- Circular dependencies between modules
+- Classes with too many responsibilities (God Classes)
+- Excessive coupling between components
 
-### 2. Deuda de código
-- Código duplicado (misma lógica en múltiples lugares)
-- Métodos con más de 30 líneas o más de 4 parámetros
-- Comentarios TODO/FIXME/HACK sin seguimiento
-- Variables con nombres genéricos (data, temp, obj, x)
-- Lógica compleja sin comentarios explicativos
-- Magic numbers o strings literales sin constantes
+### 2. Code debt
+- Duplicated code (same logic in multiple places)
+- Methods with more than 30 lines or more than 4 parameters
+- TODO/FIXME/HACK comments without tracking
+- Variables with generic names (data, temp, obj, x)
+- Complex logic without explanatory comments
+- Magic numbers or string literals without constants
 
-### 3. Deuda de tests
-- Clases sin tests o con cobertura menor al 50%
-- Tests que prueban implementación en lugar de comportamiento
-- Tests sin @DisplayName o con nombres poco descriptivos
-- Ausencia de tests de integración o edge cases
+### 3. Test debt
+- Classes without tests or with less than 50% coverage
+- Tests that test implementation instead of behavior
+- Tests without @DisplayName or with poorly descriptive names
+- Missing integration tests or edge cases
 
-### 4. Deuda de dependencias
-- Dependencias desactualizadas (comparar con versiones recientes)
-- Dependencias no utilizadas en el proyecto
-- Dependencias con vulnerabilidades conocidas
+### 4. Dependency debt
+- Outdated dependencies (compare with recent versions)
+- Unused dependencies in the project
+- Dependencies with known vulnerabilities
 
-### 5. Deuda de configuración
-- Configuraciones hardcodeadas que deberían ser variables de entorno
-- Falta de perfiles de configuración (dev, test, prod)
-- Secrets o passwords en archivos de configuración
+### 5. Configuration debt
+- Hardcoded configurations that should be environment variables
+- Missing configuration profiles (dev, test, prod)
+- Secrets or passwords in configuration files
 
-## Formato del reporte
+## Report format
 
-# Reporte de Deuda Técnica
-**Proyecto:** [nombre]
-**Fecha:** [fecha actual]
-**Deuda total estimada:** [X horas/días de trabajo]
+# Technical Debt Report
+**Project:** [name]
+**Date:** [current date]
+**Total estimated debt:** [X hours/days of work]
 
-## Resumen ejecutivo
-[2-3 párrafos con el estado general de la deuda técnica]
+## Executive summary
+[2-3 paragraphs with the overall state of technical debt]
 
-## Índice de deuda por categoría
-| Categoría | Items | Esfuerzo estimado | Prioridad |
-|-----------|-------|-------------------|-----------|
-| Arquitectura | | | |
-| Código | | | |
+## Debt index by category
+| Category | Items | Estimated effort | Priority |
+|----------|-------|-----------------|----------|
+| Architecture | | | |
+| Code | | | |
 | Tests | | | |
-| Dependencias | | | |
-| Configuración | | | |
+| Dependencies | | | |
+| Configuration | | | |
 
-## Hallazgos detallados
+## Detailed findings
 
-### [Categoría]
+### [Category]
 
-#### DT-001: [título del hallazgo]
-- **Severidad:** Alta / Media / Baja
-- **Ubicación:** archivo(s) afectado(s)
-- **Descripción:** qué está mal y por qué es deuda
-- **Impacto si no se corrige:** consecuencia a futuro
-- **Esfuerzo de corrección:** X horas
-- **Sugerencia:** cómo resolverlo
+#### DT-001: [finding title]
+- **Severity:** High / Medium / Low
+- **Location:** affected file(s)
+- **Description:** what is wrong and why it is debt
+- **Impact if not fixed:** future consequence
+- **Fix effort:** X hours
+- **Suggestion:** how to resolve it
 
-## Roadmap de remediación recomendado
+## Recommended remediation roadmap
 
-### Sprint 1 (Quick wins — menos de 4h cada uno)
-[Lista de items de bajo esfuerzo y alto impacto]
+### Sprint 1 (Quick wins — less than 4h each)
+[List of low-effort, high-impact items]
 
-### Sprint 2 (Medio plazo — 1 a 3 días cada uno)
-[Lista de items de esfuerzo medio]
+### Sprint 2 (Medium term — 1 to 3 days each)
+[List of medium-effort items]
 
-### Backlog (Largo plazo — planificar en roadmap)
-[Items de alto esfuerzo que requieren planificación]
+### Backlog (Long term — plan in roadmap)
+[High-effort items that require planning]

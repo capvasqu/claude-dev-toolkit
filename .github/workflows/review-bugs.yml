@@ -1,4 +1,4 @@
-name: Code Review Integral
+name: Comprehensive Code Review
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   review:
-    name: Revision integral con Claude Code
+    name: Comprehensive review with Claude Code
     runs-on: ubuntu-latest
 
     permissions:
@@ -15,42 +15,44 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Instalar Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Instalar Claude Code
+      - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
-      - name: Ejecutar revision integral
+      - name: Run comprehensive review
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
-          claude --print "$(cat .github/prompts/review-bugs.md)" > REPORTE-REVISION-INTEGRAL.md
+          claude -p "$(cat .github/prompts/review-bugs.md)" \
+            --allowedTools "Read,Bash,Write" \
+            --output-format text > REPORTE-REVISION-INTEGRAL.md 2>&1 || true
         continue-on-error: true
 
-      - name: Publicar reporte como comentario en el PR
+      - name: Post report as PR comment
         uses: actions/github-script@v7
         if: always()
         with:
           script: |
             const fs = require('fs');
-            let body = '## Revision Integral de Codigo — Claude Code\n\n';
+            let body = '## Comprehensive Code Review — Claude Code\n\n';
 
             if (fs.existsSync('REPORTE-REVISION-INTEGRAL.md')) {
-              const reporte = fs.readFileSync('REPORTE-REVISION-INTEGRAL.md', 'utf8');
-              // Limitar a 65000 caracteres para no exceder el limite de GitHub
-              body += reporte.length > 65000
-                ? reporte.substring(0, 65000) + '\n\n_[Reporte truncado — ver artefacto completo]_'
-                : reporte;
+              const report = fs.readFileSync('REPORTE-REVISION-INTEGRAL.md', 'utf8');
+              // Limit to 65000 characters to avoid GitHub comment limit
+              body += report.length > 65000
+                ? report.substring(0, 65000) + '\n\n_[Report truncated — see full artifact]_'
+                : report;
             } else {
-              body += '_No se pudo generar el reporte. Verificar los logs del workflow._';
+              body += '_Could not generate report. Check workflow logs._';
             }
 
             await github.rest.issues.createComment({
@@ -60,10 +62,10 @@ jobs:
               body: body
             });
 
-      - name: Subir reporte como artefacto
+      - name: Upload report as artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: reporte-revision-integral
+          name: comprehensive-review-report
           path: REPORTE-REVISION-INTEGRAL.md
           retention-days: 30

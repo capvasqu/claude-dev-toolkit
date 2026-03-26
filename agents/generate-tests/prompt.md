@@ -1,49 +1,49 @@
-# Agente: generate-tests
-# Propósito: Generar tests unitarios para clases sin cobertura
+# Agent: generate-tests
+# Purpose: Generate unit tests for classes without coverage
 
-Analiza el proyecto y genera tests unitarios para las clases que no tienen
-cobertura de tests o que tienen casos TODO pendientes.
+Analyze the project and generate unit tests for classes that have no test
+coverage or that have pending TODO cases.
 
-## Instrucciones
+## Instructions
 
-### 1. Identificar clases sin tests
-Busca en el código fuente:
-- Clases de servicio (@Service) sin archivo de test correspondiente
-- Archivos de test existentes con métodos marcados como TODO
-- Métodos públicos en servicios que no tienen ningún test
+### 1. Identify classes without tests
+Search the source code for:
+- Service classes (@Service) without a corresponding test file
+- Existing test files with methods marked as TODO
+- Public methods in services that have no tests at all
 
-### 2. Generar los tests
-Para cada clase identificada, genera tests siguiendo estas reglas:
+### 2. Generate the tests
+For each identified class, generate tests following these rules:
 
-#### Para proyectos Java/Spring Boot:
+#### For Java/Spring Boot projects:
 - Framework: JUnit 5 + Mockito + AssertJ
-- Anotación de clase: @ExtendWith(MockitoExtension.class)
-- @DisplayName en español describiendo el comportamiento esperado
-- Nombre del método: metodo_contexto_resultadoEsperado
-- Un test por comportamiento concreto
-- @BeforeEach con datos de prueba reutilizables
-- Mockear solo repositorios y dependencias externas
-- Usar assertThat de AssertJ, nunca assertEquals de JUnit
-- Incluir casos: happy path, caso null/vacío, caso no encontrado, caso borde
+- Class annotation: @ExtendWith(MockitoExtension.class)
+- @DisplayName in English describing the expected behavior
+- Method name: method_context_expectedResult
+- One test per concrete behavior
+- @BeforeEach with reusable test data
+- Mock only repositories and external dependencies
+- Use assertThat from AssertJ, never assertEquals from JUnit
+- Include cases: happy path, null/empty case, not found case, edge case
 
-#### Para proyectos JavaScript/React:
+#### For JavaScript/React projects:
 - Framework: Jest + React Testing Library
-- Describir el componente con describe()
-- Un it() por comportamiento
-- Mockear llamadas a la API con jest.mock()
+- Describe the component with describe()
+- One it() per behavior
+- Mock API calls with jest.mock()
 
-### 3. Casos de test mínimos por método de servicio
-Para cada método público generar al menos:
-- Test del caso exitoso (happy path)
-- Test cuando el recurso no existe (debe lanzar excepción)
-- Test con parámetro null o inválido
-- Test del caso borde más relevante
+### 3. Minimum test cases per service method
+For each public method generate at least:
+- Happy path test
+- Test when resource does not exist (should throw exception)
+- Test with null or invalid parameter
+- Test for the most relevant edge case
 
-### 4. Dónde guardar los tests
-- Java: src/test/java/[mismo paquete que la clase]
-- JavaScript: src/__tests__/ o junto al componente como ComponentName.test.js
+### 4. Where to save the tests
+- Java: src/test/java/[same package as the class]
+- JavaScript: src/__tests__/ or next to the component as ComponentName.test.js
 
-### 5. No modificar
-- Nunca modificar clases de producción
-- Nunca modificar tests existentes que ya pasen
-- Solo agregar tests nuevos o completar los marcados como TODO
+### 5. Do not modify
+- Never modify production classes
+- Never modify existing passing tests
+- Only add new tests or complete those marked as TODO

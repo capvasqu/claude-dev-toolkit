@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================================
-# claude-dev-toolkit — Agente: generate-tests
-# Uso: ./agents/generate-tests/run.sh [ruta-al-proyecto]
+# claude-dev-toolkit — Agent: generate-tests
+# Usage: ./agents/generate-tests/run.sh [path-to-project]
 # ============================================================
 
 set -e
@@ -11,39 +11,39 @@ PROMPT_FILE="$AGENT_DIR/prompt.md"
 PROJECT_DIR="${1:-$(pwd)}"
 
 echo "============================================================"
-echo " Claude Dev Toolkit — Generador de Tests Unitarios"
+echo " Claude Dev Toolkit — Unit Test Generator"
 echo "============================================================"
-echo " Proyecto : $PROJECT_DIR"
-echo " Agente   : generate-tests"
+echo " Project : $PROJECT_DIR"
+echo " Agent   : generate-tests"
 echo "============================================================"
 
 if [ ! -f "$PROMPT_FILE" ]; then
-  echo "ERROR: No se encontro prompt.md en $AGENT_DIR"
+  echo "ERROR: prompt.md not found in $AGENT_DIR"
   exit 1
 fi
 
 if [ ! -d "$PROJECT_DIR" ]; then
-  echo "ERROR: El directorio del proyecto no existe: $PROJECT_DIR"
+  echo "ERROR: Project directory does not exist: $PROJECT_DIR"
   exit 1
 fi
 
 if ! command -v claude &> /dev/null; then
-  echo "ERROR: Claude Code no esta instalado."
-  echo "Instalar con: npm install -g @anthropic-ai/claude-code"
+  echo "ERROR: Claude Code is not installed."
+  echo "Install with: npm install -g @anthropic-ai/claude-code"
   exit 1
 fi
 
 cd "$PROJECT_DIR"
 
 echo ""
-echo "Analizando cobertura y generando tests... (esto puede tomar varios minutos)"
+echo "Analyzing coverage and generating tests... (this may take several minutes)"
 echo ""
 
 claude --print "$(cat "$PROMPT_FILE")"
 
 echo ""
 echo "============================================================"
-echo " Tests generados. Ejecutar para verificar:"
+echo " Tests generated. Run to verify:"
 echo "   Java:       mvn test"
 echo "   JavaScript: npm test"
 echo "============================================================"

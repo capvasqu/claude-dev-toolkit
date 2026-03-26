@@ -1,33 +1,34 @@
 # Claude Dev Toolkit
 
-Coleccion de agentes Claude Code para automatizar tareas repetitivas
-en equipos de desarrollo de software.
+A collection of Claude Code agents to automate repetitive tasks
+in software development teams.
 
-Cada agente puede ejecutarse manualmente desde la terminal o integrarse
-a GitHub Actions para ejecucion automatica en el ciclo de CI/CD.
-
----
-
-## Agentes disponibles
-
-| Agente | Proposito | Ejecucion manual | GitHub Actions |
-|--------|-----------|-----------------|----------------|
-| `review-bugs` | Revision integral: bugs, calidad, seguridad y performance | Si | En cada PR |
-| `generate-docs` | Genera README, ARCHITECTURE.md y CHANGELOG automaticamente | Si | Manual |
-| `generate-tests` | Genera tests unitarios para clases sin cobertura | Si | Manual |
-| `describe-pr` | Genera descripcion profesional del Pull Request | Si | Al abrir PR |
-| `tech-debt` | Detecta y prioriza deuda tecnica del proyecto | Si | Semanal (lunes) |
+Each agent can be run manually from the terminal or integrated into
+GitHub Actions for automatic execution in the CI/CD cycle.
 
 ---
 
-## Requisitos
+## Available agents
 
-- [Claude Code](https://docs.anthropic.com/claude-code) instalado globalmente
-- Node.js 18 o superior
-- Git Bash (Windows) o terminal Unix/Mac
-- Cuenta en [Anthropic Console](https://console.anthropic.com) con API key
+| Agent | Purpose | Manual run | GitHub Actions |
+|-------|---------|------------|----------------|
+| `review-bugs` | Comprehensive review: bugs, quality, security and performance | Yes | On every PR |
+| `generate-docs` | Automatically generates README, ARCHITECTURE.md and CHANGELOG | Yes | Manual |
+| `generate-tests` | Generates unit tests for classes without coverage | Yes | Manual |
+| `describe-pr` | Generates professional Pull Request description | Yes | On PR open |
+| `tech-debt` | Detects and prioritizes technical debt | Yes | Weekly (Monday) |
 
-### Instalacion de Claude Code
+---
+
+## Requirements
+
+- [Claude Code](https://docs.anthropic.com/claude-code) installed globally
+- Node.js 18 or higher
+- Git Bash (Windows) or Unix/Mac terminal
+- [claude.ai](https://claude.ai) account with Pro or Max subscription
+- `CLAUDE_CODE_OAUTH_TOKEN` generated with `claude setup-token`
+
+### Installing Claude Code
 
 ```bash
 npm install -g @anthropic-ai/claude-code
@@ -36,127 +37,129 @@ claude --version
 
 ---
 
-## Uso manual
+## Manual usage
 
-### Desde el directorio del toolkit
+### From the toolkit directory
 
 ```bash
-# Clonar el toolkit
+# Clone the toolkit
 git clone https://github.com/capvasqu/claude-dev-toolkit.git
 cd claude-dev-toolkit
 
-# Dar permisos de ejecucion a los scripts (Unix/Mac/Git Bash)
+# Grant execution permissions (Unix/Mac/Git Bash)
 chmod +x agents/*/run.sh
 
-# Ejecutar un agente sobre tu proyecto
-./agents/review-bugs/run.sh /ruta/a/tu/proyecto
-./agents/generate-docs/run.sh /ruta/a/tu/proyecto
-./agents/generate-tests/run.sh /ruta/a/tu/proyecto
-./agents/describe-pr/run.sh /ruta/a/tu/proyecto
-./agents/tech-debt/run.sh /ruta/a/tu/proyecto
+# Run an agent on your project
+./agents/review-bugs/run.sh /path/to/your/project
+./agents/generate-docs/run.sh /path/to/your/project
+./agents/generate-tests/run.sh /path/to/your/project
+./agents/describe-pr/run.sh /path/to/your/project
+./agents/tech-debt/run.sh /path/to/your/project
 ```
 
-### Desde el directorio de tu proyecto
+### From your project directory
 
 ```bash
-cd /ruta/a/tu/proyecto
+cd /path/to/your/project
 
-# Ejecutar directamente con Claude Code
-claude --print "$(cat /ruta/al/toolkit/agents/review-bugs/prompt.md)"
+# Run directly with Claude Code
+claude --print "$(cat /path/to/toolkit/agents/review-bugs/prompt.md)"
 ```
 
 ---
 
-## Integracion con GitHub Actions
+## GitHub Actions integration
 
-### Prerequisito: configurar el secreto ANTHROPIC_API_KEY
+### Prerequisite: configure the CLAUDE_CODE_OAUTH_TOKEN secret
 
-1. En tu repositorio ir a **Settings → Secrets and variables → Actions**
-2. Crear un nuevo secreto llamado `ANTHROPIC_API_KEY`
-3. Pegar tu API key de [console.anthropic.com](https://console.anthropic.com)
+1. Generate the token locally by running `claude setup-token` in Git Bash
+2. In your repository go to **Settings → Secrets and variables → Actions**
+3. Create a new secret named `CLAUDE_CODE_OAUTH_TOKEN`
+4. Paste the generated token as the value
 
-### Copiar los workflows a tu repositorio
+### Copy the workflows to your repository
 
 ```bash
-# Desde la raiz de tu proyecto
-cp -r /ruta/al/toolkit/.github .
+# From the root of your project
+cp -r /path/to/toolkit/.github .
 ```
 
-O copiar manualmente los archivos de `.github/workflows/` y `.github/prompts/`
-a tu repositorio.
+Or manually copy the files from `.github/workflows/` and `.github/prompts/`
+to your repository.
 
-### Comportamiento de cada workflow
+### Behavior of each workflow
 
 #### review-bugs.yml
-- **Disparador:** cada vez que se abre o actualiza un Pull Request
-- **Accion:** analiza el codigo y publica el reporte como comentario en el PR
-- **Artefacto:** guarda el reporte completo por 30 dias
+- **Trigger:** every time a Pull Request is opened or updated
+- **Action:** analyzes the code and posts the report as a comment on the PR
+- **Artifact:** saves the full report for 30 days
 
 #### describe-pr.yml
-- **Disparador:** cuando se abre un Pull Request nuevo
-- **Accion:** genera y actualiza automaticamente la descripcion del PR
+- **Trigger:** when a new Pull Request is opened
+- **Action:** automatically generates and updates the PR description
 
 #### tech-debt.yml
-- **Disparador:** todos los lunes a las 8am UTC (automatico) o manual
-- **Accion:** analiza la deuda tecnica y crea un Issue con el reporte
-- **Artefacto:** guarda el reporte completo por 90 dias
+- **Trigger:** every Monday at 8am UTC (automatic) or manual
+- **Action:** analyzes technical debt and creates an Issue with the report
+- **Artifact:** saves the full report for 90 days
 
 ---
 
-## Personalizar los prompts
+## Customize the prompts
 
-Cada agente tiene un archivo `prompt.md` que puedes editar para adaptarlo
-a las convenciones de tu equipo:
+Each agent has a `prompt.md` file you can edit to adapt it
+to your team's conventions:
 
 ```
 agents/
-  review-bugs/prompt.md    ← agregar reglas de seguridad de tu empresa
-  generate-docs/prompt.md  ← ajustar estructura de documentacion
-  generate-tests/prompt.md ← especificar frameworks de tu proyecto
-  describe-pr/prompt.md    ← personalizar template del PR
-  tech-debt/prompt.md      ← ajustar criterios de prioridad
+  review-bugs/prompt.md    ← add your company's security rules
+  generate-docs/prompt.md  ← adjust documentation structure
+  generate-tests/prompt.md ← specify your project's frameworks
+  describe-pr/prompt.md    ← customize the PR template
+  tech-debt/prompt.md      ← adjust priority criteria
 ```
 
 ---
 
-## Integracion con herramientas de analisis estatico
+## Integration with static analysis tools
 
-Claude Code realiza el analisis semantico del codigo. Para analisis
-estatico continuo se recomienda complementar con:
+Claude Code performs semantic code analysis. For continuous
+static analysis it is recommended to complement with:
 
-| Herramienta | Proposito | Integracion |
-|-------------|-----------|-------------|
-| SonarQube / SonarCloud | Calidad y cobertura de codigo | GitHub Action disponible |
-| OWASP Dependency-Check | Vulnerabilidades en dependencias | Plugin Maven/Gradle |
-| Snyk | Seguridad en dependencias y contenedores | GitHub Action disponible |
-| Checkstyle | Estilo de codigo Java | Plugin Maven |
+| Tool | Purpose | Integration |
+|------|---------|-------------|
+| SonarQube / SonarCloud | Code quality and coverage | GitHub Action available |
+| OWASP Dependency-Check | Dependency vulnerabilities | Maven/Gradle plugin |
+| Snyk | Dependency and container security | GitHub Action available |
+| Checkstyle | Java code style | Maven plugin |
 
 ---
 
-## Estructura del proyecto
+## Repository structure
 
 ```
 claude-dev-toolkit/
 ├── agents/
 │   ├── review-bugs/
-│   │   ├── prompt.md     # Instruccion completa al agente
-│   │   └── run.sh        # Script de ejecucion manual
+│   │   ├── prompt.md     # Complete agent instruction
+│   │   └── run.sh        # Manual execution script
 │   ├── generate-docs/
 │   ├── generate-tests/
 │   ├── describe-pr/
 │   └── tech-debt/
 ├── .github/
 │   ├── workflows/
-│   │   ├── review-bugs.yml    # CI: ejecuta en cada PR
-│   │   ├── describe-pr.yml    # CI: genera descripcion al abrir PR
-│   │   └── tech-debt.yml      # Scheduled: analisis semanal
-│   └── prompts/               # Prompts para los workflows
-└── README.md
+│   │   ├── review-bugs.yml    # CI: runs on every PR
+│   │   ├── describe-pr.yml    # CI: generates description on PR open
+│   │   └── tech-debt.yml      # Scheduled: weekly analysis
+│   └── prompts/               # Prompts for the workflows
+├── README.md
+└── USAGE.md
 ```
 
 ---
 
-## Autor
+## Author
 
 **Carlos Alberto Polo Vasquez**
 IT Community Lead | Tech Lead | AI Automation
@@ -164,6 +167,6 @@ IT Community Lead | Tech Lead | AI Automation
 
 ---
 
-## Licencia
+## License
 
-MIT — libre para usar, modificar y distribuir.
+MIT — free to use, modify and distribute.

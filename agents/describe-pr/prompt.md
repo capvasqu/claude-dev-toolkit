@@ -1,64 +1,64 @@
-# Agente: describe-pr
-# Propósito: Generar descripción profesional de un Pull Request desde el git diff
+# Agent: describe-pr
+# Purpose: Generate a professional Pull Request description from the git diff
 
-Analiza los cambios del branch actual comparado con main/master y genera
-una descripción completa y profesional para el Pull Request.
+Analyze the changes in the current branch compared to main/master and generate
+a complete and professional description for the Pull Request.
 
-## Instrucciones
+## Instructions
 
-### 1. Obtener los cambios
-Ejecuta estos comandos para entender el contexto:
+### 1. Get the changes
+Run these commands to understand the context:
 ```
 git log main..HEAD --oneline
 git diff main..HEAD --stat
 git diff main..HEAD
 ```
 
-### 2. Analizar los cambios
-Identifica:
-- Qué archivos fueron modificados y por qué
-- Qué funcionalidades fueron agregadas, modificadas o eliminadas
-- Si hay cambios en tests, documentación o configuración
-- El impacto de los cambios (breaking changes, nuevas dependencias)
+### 2. Analyze the changes
+Identify:
+- Which files were modified and why
+- Which features were added, modified or removed
+- Whether there are changes in tests, documentation or configuration
+- The impact of the changes (breaking changes, new dependencies)
 
-### 3. Generar el archivo PR-DESCRIPTION.md
-Genera un archivo PR-DESCRIPTION.md en la raíz con esta estructura exacta:
+### 3. Generate the PR-DESCRIPTION.md file
+Generate a PR-DESCRIPTION.md file in the root with this exact structure:
 
-## Descripción
-[Resumen en 2-3 líneas de qué hace este PR y por qué]
+## Description
+[2-3 line summary of what this PR does and why]
 
-## Tipo de cambio
+## Type of change
 - [ ] Bug fix
-- [ ] Nueva funcionalidad
+- [ ] New feature
 - [ ] Refactoring
-- [ ] Documentación
+- [ ] Documentation
 - [ ] Tests
-- [ ] Configuración / DevOps
+- [ ] Configuration / DevOps
 
-Marcar con [x] los que apliquen según los cambios detectados.
+Mark with [x] the ones that apply based on the detected changes.
 
-## Cambios realizados
-- [lista de cambios concretos encontrados en el diff]
+## Changes made
+- [list of concrete changes found in the diff]
 
-## Archivos modificados
-| Archivo | Tipo de cambio | Descripción |
-|---------|---------------|-------------|
-[tabla con cada archivo modificado]
+## Modified files
+| File | Type of change | Description |
+|------|---------------|-------------|
+[table with each modified file]
 
 ## Testing
-- [ ] Tests unitarios agregados/actualizados
-- [ ] Tests de integración verificados
-- [ ] Probado manualmente en entorno local
+- [ ] Unit tests added/updated
+- [ ] Integration tests verified
+- [ ] Manually tested in local environment
 
 ## Checklist
-- [ ] El código sigue las convenciones del proyecto
-- [ ] Se agregó documentación para cambios públicos
-- [ ] No hay secretos ni datos sensibles expuestos
-- [ ] Los tests existentes siguen pasando
+- [ ] Code follows project conventions
+- [ ] Documentation added for public changes
+- [ ] No secrets or sensitive data exposed
+- [ ] Existing tests still pass
 
-## Notas para el reviewer
-[Puntos específicos donde el reviewer debería prestar especial atención]
+## Notes for the reviewer
+[Specific points where the reviewer should pay special attention]
 
-### 4. Mostrar en consola
-Al finalizar, muestra en consola el contenido del PR-DESCRIPTION.md
-para que el desarrollador pueda copiarlo directamente a GitHub.
+### 4. Show in console
+When finished, display the content of PR-DESCRIPTION.md in the console
+so the developer can copy it directly to GitHub.

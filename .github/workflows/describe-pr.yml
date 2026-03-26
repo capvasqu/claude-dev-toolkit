@@ -1,4 +1,4 @@
-name: Descripcion automatica de PR
+name: Automatic PR Description
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   describe:
-    name: Generar descripcion del PR con Claude Code
+    name: Generate PR description with Claude Code
     runs-on: ubuntu-latest
 
     permissions:
@@ -15,20 +15,20 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout del repositorio
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Instalar Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Instalar Claude Code
+      - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
 
-      - name: Obtener diff del PR
+      - name: Get PR diff
         run: |
           git fetch origin ${{ github.base_ref }}
           git diff origin/${{ github.base_ref }}...HEAD --stat > /tmp/diff-stat.txt
@@ -36,31 +36,33 @@ jobs:
           git log origin/${{ github.base_ref }}..HEAD --oneline > /tmp/commits.txt
           echo "Branch: ${{ github.head_ref }}" > /tmp/pr-context.txt
           echo "Base: ${{ github.base_ref }}" >> /tmp/pr-context.txt
-          echo "Titulo del PR: ${{ github.event.pull_request.title }}" >> /tmp/pr-context.txt
+          echo "PR title: ${{ github.event.pull_request.title }}" >> /tmp/pr-context.txt
 
-      - name: Generar descripcion con Claude Code
+      - name: Generate description with Claude Code
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         run: |
           PROMPT="$(cat .github/prompts/describe-pr.md)"
-          CONTEXT="Contexto del PR:
+          CONTEXT="PR context:
           $(cat /tmp/pr-context.txt)
 
-          Commits incluidos:
+          Commits included:
           $(cat /tmp/commits.txt)
 
-          Archivos modificados:
+          Modified files:
           $(cat /tmp/diff-stat.txt)
 
-          Diff completo:
+          Full diff:
           $(head -c 20000 /tmp/diff-full.txt)"
 
-          claude --print "$PROMPT
+          claude -p "$PROMPT
 
-          $CONTEXT" > PR-DESCRIPTION.md
+          $CONTEXT" \
+            --allowedTools "Read,Bash,Write" \
+            --output-format text > PR-DESCRIPTION.md 2>&1 || true
         continue-on-error: true
 
-      - name: Actualizar descripcion del PR
+      - name: Update PR description
         uses: actions/github-script@v7
         if: always()
         with:
@@ -71,7 +73,7 @@ jobs:
             if (fs.existsSync('PR-DESCRIPTION.md')) {
               body = fs.readFileSync('PR-DESCRIPTION.md', 'utf8');
             } else {
-              body = '_No se pudo generar la descripcion automaticamente._';
+              body = '_Could not generate description automatically._';
             }
 
             await github.rest.pulls.update({

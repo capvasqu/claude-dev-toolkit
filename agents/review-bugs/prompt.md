@@ -1,101 +1,101 @@
-# Agente: review-bugs
-# Propósito: Revisión integral de código — bugs, calidad, seguridad y performance
+# Agent: review-bugs
+# Purpose: Comprehensive code review — bugs, quality, security and performance
 
-Analiza exhaustivamente todos los archivos de código fuente de este repositorio
-y genera un archivo llamado REPORTE-REVISION-INTEGRAL.md en la raíz del proyecto.
+Thoroughly analyze all source code files in this repository
+and generate a file called REPORTE-REVISION-INTEGRAL.md in the project root.
 
-## Instrucciones de análisis
+## Analysis instructions
 
-### 1. Bugs y errores lógicos
-Busca en todo el código:
-- Errores lógicos y bugs funcionales
-- Validaciones faltantes de parámetros de entrada (null, negativos, vacíos)
-- Manejo incorrecto de excepciones (catch vacíos, excepciones genéricas)
-- Condiciones de carrera o problemas de concurrencia
-- Borrado físico donde debería haber borrado lógico
-- Pérdida de precisión en operaciones numéricas (double/float para dinero)
-- NullPointerException potenciales no manejados
+### 1. Bugs and logic errors
+Search the entire codebase for:
+- Logic errors and functional bugs
+- Missing input parameter validation (null, negative, empty)
+- Incorrect exception handling (empty catch blocks, generic exceptions)
+- Race conditions or concurrency issues
+- Physical deletion where soft delete should be used
+- Precision loss in numeric operations (double/float for money)
+- Potential unhandled NullPointerExceptions
 
-### 2. Calidad de código
-Evalúa las siguientes dimensiones:
-- Principios SOLID (Single Responsibility, Open/Closed, etc.)
-- Código duplicado o que viola DRY (Don't Repeat Yourself)
-- Métodos demasiado largos o con demasiadas responsabilidades
-- Inyección de dependencias incorrecta (@Autowired en campo vs constructor)
-- Ausencia de documentación (Javadoc/JSDoc) en métodos públicos
-- Nombres de variables o métodos poco descriptivos
-- Complejidad ciclomática alta
+### 2. Code quality
+Evaluate the following dimensions:
+- SOLID principles (Single Responsibility, Open/Closed, etc.)
+- Duplicated code or DRY (Don't Repeat Yourself) violations
+- Methods that are too long or have too many responsibilities
+- Incorrect dependency injection (@Autowired on field vs constructor)
+- Missing documentation (Javadoc/JSDoc) on public methods
+- Poorly descriptive variable or method names
+- High cyclomatic complexity
 
-### 3. Seguridad (perspectiva ciberseguridad)
-Identifica vulnerabilidades de seguridad:
-- SQL Injection: queries dinámicas sin parametrizar
-- Exposición de entidades JPA directamente en endpoints REST
-- Datos sensibles expuestos en logs o respuestas de error
-- Falta de validación de entrada en endpoints públicos
-- Configuraciones inseguras (contraseñas hardcodeadas, SSL desactivado)
-- Cross-Site Scripting (XSS) en el frontend
-- Exposición de stack traces en respuestas de error al cliente
-- Secretos o API keys expuestos en el código
+### 3. Security (cybersecurity perspective)
+Identify security vulnerabilities:
+- SQL Injection: dynamic queries without parameterization
+- JPA entities exposed directly in REST endpoints
+- Sensitive data exposed in logs or error responses
+- Missing input validation on public endpoints
+- Insecure configurations (hardcoded passwords, SSL disabled)
+- Cross-Site Scripting (XSS) in the frontend
+- Stack traces exposed in client error responses
+- Secrets or API keys exposed in the code
 
-### 4. Performance y rendimiento
-Detecta problemas de rendimiento:
-- Consultas N+1 en JPA/Hibernate (lazy loading mal usado)
-- Falta de paginación en endpoints que retornan listas completas
-- Operaciones costosas dentro de loops
-- Falta de índices sugeridos para queries frecuentes
-- Carga innecesaria de datos completos cuando solo se necesitan campos específicos
-- Re-renders innecesarios en componentes React (falta de useMemo/useCallback)
-- Llamadas HTTP redundantes desde el frontend
+### 4. Performance
+Detect performance issues:
+- N+1 queries in JPA/Hibernate (bad lazy loading)
+- Missing pagination on endpoints returning full lists
+- Expensive operations inside loops
+- Missing suggested indexes for frequent queries
+- Unnecessary full data loading when only specific fields are needed
+- Unnecessary re-renders in React components (missing useMemo/useCallback)
+- Redundant HTTP calls from the frontend
 
-## Formato del reporte
+## Report format
 
-Genera el reporte con la siguiente estructura exacta:
+Generate the report with the following exact structure:
 
-# Reporte de Revisión Integral de Código
-**Proyecto:** [nombre del proyecto]
-**Fecha:** [fecha actual]
-**Archivos analizados:** [número]
-**Total de hallazgos:** [número]
+# Comprehensive Code Review Report
+**Project:** [project name]
+**Date:** [current date]
+**Files analyzed:** [number]
+**Total findings:** [number]
 
-## Resumen ejecutivo
-[Párrafo de 3-4 líneas con los hallazgos más críticos]
+## Executive summary
+[3-4 line paragraph with the most critical findings]
 
-## Estadísticas
-| Categoría | Crítico | Alto | Medio | Bajo | Total |
-|-----------|---------|------|-------|------|-------|
+## Statistics
+| Category | Critical | High | Medium | Low | Total |
+|----------|---------|------|--------|-----|-------|
 | Bugs | | | | | |
-| Calidad | | | | | |
-| Seguridad | | | | | |
+| Quality | | | | | |
+| Security | | | | | |
 | Performance | | | | | |
 | **Total** | | | | | |
 
-## Hallazgos detallados
+## Detailed findings
 
-### Bugs y errores lógicos
-#### [CRÍTICO/ALTO/MEDIO/BAJO] BUG-001: [título]
-- **Archivo:** ruta/al/archivo.java (línea N)
-- **Descripción:** qué está mal y por qué es un problema
-- **Impacto:** qué puede ocurrir si no se corrige
-- **Corrección sugerida:** código o descripción de cómo corregirlo
+### Bugs and logic errors
+#### [CRITICAL/HIGH/MEDIUM/LOW] BUG-001: [title]
+- **File:** path/to/file.java (line N)
+- **Description:** what is wrong and why it is a problem
+- **Impact:** what may happen if not fixed
+- **Suggested fix:** code or description of how to fix it
 
-[repetir para cada hallazgo]
+[repeat for each finding]
 
-### Calidad de código
-[misma estructura]
+### Code quality
+[same structure]
 
-### Seguridad
-[misma estructura]
+### Security
+[same structure]
 
 ### Performance
-[misma estructura]
+[same structure]
 
-## Plan de acción recomendado
-Lista priorizada de los 5 hallazgos más críticos a corregir primero,
-con estimación de esfuerzo (horas) para cada uno.
+## Recommended action plan
+Prioritized list of the 5 most critical findings to fix first,
+with effort estimate (hours) for each one.
 
-## Nota sobre herramientas complementarias
-Este análisis fue realizado por Claude Code. Para análisis estático
-continuo se recomienda complementar con:
-- SonarQube/SonarCloud: calidad y cobertura de código
-- OWASP Dependency-Check: vulnerabilidades en dependencias
-- Snyk: seguridad en dependencias y contenedores
+## Note on complementary tools
+This analysis was performed by Claude Code. For continuous static analysis
+it is recommended to complement with:
+- SonarQube/SonarCloud: code quality and coverage
+- OWASP Dependency-Check: dependency vulnerabilities
+- Snyk: dependency and container security

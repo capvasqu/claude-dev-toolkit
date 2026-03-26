@@ -1,40 +1,40 @@
-# Agente: generate-docs
-# Propósito: Generar documentación técnica completa de forma automática
+# Agent: generate-docs
+# Purpose: Automatically generate complete technical documentation
 
-Analiza el proyecto completo y genera los siguientes archivos de documentación.
-No modifiques ningún archivo de código fuente — solo genera o actualiza documentación.
+Analyze the entire project and generate the following documentation files.
+Do not modify any source code files — only generate or update documentation.
 
-## Archivos a generar
+## Files to generate
 
 ### 1. README.md
-Actualiza o crea el README.md con:
-- Nombre y descripción del proyecto (inferida del código)
-- Sección "Sobre este proyecto" con propósito y contexto
-- Stack tecnológico con versiones
-- Diagrama de arquitectura en formato Mermaid (graph TB)
-  - Nodos sin saltos de línea (\n) — usar texto en una sola línea entre comillas
-- Descripción de cada capa o módulo principal
-- Todos los endpoints REST disponibles (si aplica):
-  | Método | URL | Descripción | Parámetros | Respuesta |
-- Instrucciones de instalación y ejecución (local y Docker si existe Dockerfile)
-- Requisitos previos (versiones de Java, Node, etc.)
+Update or create the README.md with:
+- Project name and description (inferred from the code)
+- "About this project" section with purpose and context
+- Tech stack with versions
+- Architecture diagram in Mermaid format (graph TB)
+  - Nodes without line breaks (\n) — use single-line text in quotes
+- Description of each main layer or module
+- All available REST endpoints (if applicable):
+  | Method | URL | Description | Parameters | Response |
+- Installation and run instructions (local and Docker if Dockerfile exists)
+- Prerequisites (Java, Node versions, etc.)
 
 ### 2. ARCHITECTURE.md
-Genera un archivo de arquitectura con:
-- Diagrama Mermaid del flujo completo de una request HTTP (sequenceDiagram)
-- Diagrama Mermaid de relaciones entre clases principales (classDiagram)
-- Diagrama Mermaid de capas del sistema (graph TB)
-- Decisiones de diseño relevantes encontradas en el código
-- IMPORTANTE: Todos los diagramas Mermaid deben usar sintaxis válida.
-  Los nodos NO pueden contener \n — usar texto en una sola línea.
+Generate an architecture file with:
+- Mermaid diagram of the complete HTTP request flow (sequenceDiagram)
+- Mermaid diagram of relationships between main classes (classDiagram)
+- Mermaid diagram of system layers (graph TB)
+- Relevant design decisions found in the code
+- IMPORTANT: All Mermaid diagrams must use valid syntax.
+  Nodes CANNOT contain \n — use single-line text.
 
 ### 3. CHANGELOG.md
-Genera o actualiza el CHANGELOG siguiendo el formato Keep a Changelog:
-- Sección [Unreleased] con subsecciones Added, Changed, Fixed
-- Listar todos los componentes y funcionalidades encontrados en el código
+Generate or update the CHANGELOG following the Keep a Changelog format:
+- [Unreleased] section with Added, Changed, Fixed subsections
+- List all components and features found in the code
 
-## Reglas importantes
-- Nunca modificar archivos .java, .jsx, .js, .ts, .py u otros archivos de código
-- Si README.md ya existe, actualizar conservando el contenido previo relevante
-- Los diagramas Mermaid deben ser sintácticamente válidos para GitHub
-- Inferir toda la información desde el código fuente, no inventar
+## Important rules
+- Never modify .java, .jsx, .js, .ts, .py or other source code files
+- If README.md already exists, update it preserving relevant existing content
+- Mermaid diagrams must be syntactically valid for GitHub
+- Infer all information from the source code, do not invent

@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================================
-# claude-dev-toolkit — Agente: tech-debt
-# Uso: ./agents/tech-debt/run.sh [ruta-al-proyecto]
+# claude-dev-toolkit — Agent: tech-debt
+# Usage: ./agents/tech-debt/run.sh [path-to-project]
 # ============================================================
 
 set -e
@@ -11,37 +11,37 @@ PROMPT_FILE="$AGENT_DIR/prompt.md"
 PROJECT_DIR="${1:-$(pwd)}"
 
 echo "============================================================"
-echo " Claude Dev Toolkit — Detector de Deuda Tecnica"
+echo " Claude Dev Toolkit — Technical Debt Detector"
 echo "============================================================"
-echo " Proyecto : $PROJECT_DIR"
-echo " Agente   : tech-debt"
+echo " Project : $PROJECT_DIR"
+echo " Agent   : tech-debt"
 echo "============================================================"
 
 if [ ! -f "$PROMPT_FILE" ]; then
-  echo "ERROR: No se encontro prompt.md en $AGENT_DIR"
+  echo "ERROR: prompt.md not found in $AGENT_DIR"
   exit 1
 fi
 
 if [ ! -d "$PROJECT_DIR" ]; then
-  echo "ERROR: El directorio del proyecto no existe: $PROJECT_DIR"
+  echo "ERROR: Project directory does not exist: $PROJECT_DIR"
   exit 1
 fi
 
 if ! command -v claude &> /dev/null; then
-  echo "ERROR: Claude Code no esta instalado."
-  echo "Instalar con: npm install -g @anthropic-ai/claude-code"
+  echo "ERROR: Claude Code is not installed."
+  echo "Install with: npm install -g @anthropic-ai/claude-code"
   exit 1
 fi
 
 cd "$PROJECT_DIR"
 
 echo ""
-echo "Analizando deuda tecnica... (esto puede tomar varios minutos)"
+echo "Analyzing technical debt... (this may take several minutes)"
 echo ""
 
 claude --print "$(cat "$PROMPT_FILE")"
 
 echo ""
 echo "============================================================"
-echo " Reporte generado: $PROJECT_DIR/REPORTE-DEUDA-TECNICA.md"
+echo " Report generated: $PROJECT_DIR/REPORTE-DEUDA-TECNICA.md"
 echo "============================================================"

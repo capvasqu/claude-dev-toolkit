@@ -1,7 +1,7 @@
 #!/bin/bash
 # ============================================================
-# claude-dev-toolkit — Agente: generate-docs
-# Uso: ./agents/generate-docs/run.sh [ruta-al-proyecto]
+# claude-dev-toolkit — Agent: generate-docs
+# Usage: ./agents/generate-docs/run.sh [path-to-project]
 # ============================================================
 
 set -e
@@ -11,39 +11,39 @@ PROMPT_FILE="$AGENT_DIR/prompt.md"
 PROJECT_DIR="${1:-$(pwd)}"
 
 echo "============================================================"
-echo " Claude Dev Toolkit — Generador de Documentacion Tecnica"
+echo " Claude Dev Toolkit — Technical Documentation Generator"
 echo "============================================================"
-echo " Proyecto : $PROJECT_DIR"
-echo " Agente   : generate-docs"
+echo " Project : $PROJECT_DIR"
+echo " Agent   : generate-docs"
 echo "============================================================"
 
 if [ ! -f "$PROMPT_FILE" ]; then
-  echo "ERROR: No se encontro prompt.md en $AGENT_DIR"
+  echo "ERROR: prompt.md not found in $AGENT_DIR"
   exit 1
 fi
 
 if [ ! -d "$PROJECT_DIR" ]; then
-  echo "ERROR: El directorio del proyecto no existe: $PROJECT_DIR"
+  echo "ERROR: Project directory does not exist: $PROJECT_DIR"
   exit 1
 fi
 
 if ! command -v claude &> /dev/null; then
-  echo "ERROR: Claude Code no esta instalado."
-  echo "Instalar con: npm install -g @anthropic-ai/claude-code"
+  echo "ERROR: Claude Code is not installed."
+  echo "Install with: npm install -g @anthropic-ai/claude-code"
   exit 1
 fi
 
 cd "$PROJECT_DIR"
 
 echo ""
-echo "Generando documentacion... (esto puede tomar varios minutos)"
+echo "Generating documentation... (this may take several minutes)"
 echo ""
 
 claude --print "$(cat "$PROMPT_FILE")"
 
 echo ""
 echo "============================================================"
-echo " Documentacion generada:"
+echo " Documentation generated:"
 echo "   - README.md"
 echo "   - ARCHITECTURE.md"
 echo "   - CHANGELOG.md"

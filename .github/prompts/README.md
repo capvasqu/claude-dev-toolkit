@@ -1,2 +1,2 @@
-Esta carpeta contiene los prompts utilizados por los workflows de GitHub Actions.
-Son copias simplificadas de los prompts en agents/ optimizadas para ejecucion en CI/CD.
+This folder contains the prompts used by the GitHub Actions workflows.
+They are simplified copies of the prompts in agents/ optimized for CI/CD execution.
